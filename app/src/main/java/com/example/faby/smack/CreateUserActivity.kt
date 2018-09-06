@@ -22,7 +22,7 @@ class CreateUserActivity : AppCompatActivity() {
         val color = random.nextInt(2)
         val avatar = random.nextInt(28)
 
-        if(color == 0){
+        if (color == 0){
             userAvatar = "light$avatar"
         } else {
             userAvatar = "dark$avatar"
@@ -36,7 +36,7 @@ class CreateUserActivity : AppCompatActivity() {
     fun generateColorClicked(view: View) {
         val random = Random()
         val r = random.nextInt(255)
-        var g = random.nextInt(255)
+        val g = random.nextInt(255)
         val b = random.nextInt(255)
 
         createAvatarImageView.setBackgroundColor(Color.rgb(r,g,b))
@@ -46,7 +46,7 @@ class CreateUserActivity : AppCompatActivity() {
         val savedB = b.toDouble() / 255
 
         avatarColor = "[$savedR, $savedG, $savedB, 1]"
-        
+
 
     }
 
