@@ -11,12 +11,15 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.faby.smack.Model.Channel
 import com.example.faby.smack.R
 import com.example.faby.smack.Services.AuthService
+import com.example.faby.smack.Services.MessageService
 import com.example.faby.smack.Services.UserDataService
 import com.example.faby.smack.Utilities.BROADCAST_USER_DATA_CHANGE
 import com.example.faby.smack.Utilities.SOCKET_URL
 import io.socket.client.IO
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
@@ -34,11 +37,13 @@ class MainActivity : AppCompatActivity(){
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+
+        socket.connect()
+        socket.on("channelCreated", onNewChannel)
     }
 
     override fun onResume() {
         LocalBroadcastManager.getInstance(this).registerReceiver(userDataChangeReceiver, IntentFilter(BROADCAST_USER_DATA_CHANGE))
-        socket.connect()
         super.onResume()
     }
 
@@ -107,6 +112,22 @@ class MainActivity : AppCompatActivity(){
                     }
                     .show()
         }
+    }
+
+    private val onNewChannel = Emitter.Listener { args ->
+       runOnUiThread {
+           val channelName = args[0] as String
+           val channelDescription = args[1] as String
+           val channelId = args[2] as String
+
+           val newChannel = Channel(channelName, channelDescription, channelId)
+           MessageService.channels.add(newChannel)
+           println(newChannel.name)
+           println(newChannel.description)
+           println(newChannel.id)
+
+       }
+
     }
 
     fun sendMsgBtnClicked(view: View) {
