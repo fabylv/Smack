@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.Toast
 import com.example.faby.smack.R
 import com.example.faby.smack.Services.AuthService
-import com.example.faby.smack.Services.UserDataService
 import com.example.faby.smack.Utilities.BROADCAST_USER_DATA_CHANGE
 import kotlinx.android.synthetic.main.activity_create_user.*
 import java.util.*
